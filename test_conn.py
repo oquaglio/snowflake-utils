@@ -3,7 +3,7 @@
 #   pip install snowflake-connector-python
 #
 # Usage:
-# 	python script.py --json-file "params.json"
+# 	python test_conn.py --json-file "test_conn.json"
 #
 # params.json:
 
