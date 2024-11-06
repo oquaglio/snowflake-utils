@@ -81,6 +81,13 @@ def test_snowflake_connectivity_using_connector(conn_params):
     except Exception as e:
         print(f"Error loading private key: {e}")
 
+    pem = private_key.private_bytes(
+        encoding=serialization.Encoding.PEM,
+        format=serialization.PrivateFormat.PKCS8,
+        # format=serialization.PrivateFormat.TraditionalOpenSSL,
+        encryption_algorithm=serialization.NoEncryption(),
+    )
+
     # Ensure 'pem' is still bytes
     assert isinstance(pem, bytes), "Private key must be bytes"
 
