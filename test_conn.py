@@ -100,15 +100,15 @@ if __name__ == "__main__":
 
 	import argparse
 	import json
-
+	
 	# Create the parser
 	parser = argparse.ArgumentParser(description="Read JSON input from a file.")
 	# Add an argument to accept a file path
 	parser.add_argument('--json-file', type=str, required=True, help='File path for JSON data.')
-
+	
 	# Parse the arguments
 	args = parser.parse_args()
-
+	
 	# Read JSON data from a file and convert to Python dictionary
 	try:
 		with open(args.json_file, 'r') as file:
@@ -116,5 +116,5 @@ if __name__ == "__main__":
 			print("Connection Parameters:", conn_params)
 	except (FileNotFoundError, json.JSONDecodeError) as e:
 		print("Error reading from file:", e)
-
-    test_snowflake_connectivity_using_connector(conn_params)
+	
+	test_snowflake_connectivity_using_connector(conn_params)
