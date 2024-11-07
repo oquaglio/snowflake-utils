@@ -7,7 +7,7 @@ from cryptography.hazmat.backends import default_backend
 
 def is_key_encrypted(key_data):
     """Check if the provided key data indicates that the key is encrypted."""
-    return b"ENCRYPTED" in key_data.decode("utf-8")
+    return b"ENCRYPTED" in key_data
 
 
 def load_private_key(key_path, password):
