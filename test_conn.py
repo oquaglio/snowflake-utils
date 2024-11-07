@@ -3,21 +3,22 @@ import json
 import logging
 from cryptography.hazmat.primitives.serialization import load_pem_private_key
 from cryptography.hazmat.backends import default_backend
-import snowflake.connector
 
 
 def is_key_encrypted(key_data):
     """Check if the provided key data indicates that the key is encrypted."""
-    return b"ENCRYPTED" in key_data
+    return b"ENCRYPTED" in key_data.decode("utf-8")
 
 
 def load_private_key(key_path, password):
-    """Loads a private key, handling encrypted and unencrypted keys appropriately."""
+    """Loads a private key, correctly handling encrypted and unencrypted keys."""
     try:
         with open(key_path, "rb") as key_file:
             key_data = key_file.read()
 
-        if is_key_encrypted(key_data):
+        encrypted = is_key_encrypted(key_data)
+
+        if encrypted:
             if not password:
                 raise ValueError("Encrypted key provided but no password was given.")
             password_bytes = password.encode()
@@ -26,7 +27,7 @@ def load_private_key(key_path, password):
                 logging.warning(
                     "Password was provided but the key is not encrypted. Ignoring the password."
                 )
-            password_bytes = None  # Ensure no password is used for unencrypted keys
+            password_bytes = None  # Do not use a password for unencrypted keys
 
         # Load the private key
         private_key = load_pem_private_key(
