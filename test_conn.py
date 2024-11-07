@@ -51,6 +51,9 @@ def test_snowflake_connectivity_using_connector(conn_params):
     private_key = load_private_key(private_key_path, password)
     conn_params.update({"private_key": private_key})
 
+    logging.info(conn_params)
+
+    logging.info(f"Connecting to Snowflake...")
     # Connect to Snowflake
     try:
         conn = snowflake.connector.connect(**conn_params)
