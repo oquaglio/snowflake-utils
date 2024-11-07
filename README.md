@@ -7,11 +7,11 @@
 pip install snowflake-connector-python
 
 
-## Usage:
+## test_conn.py Usage:
 
 python test_conn.py --json-file "test_conn.json"
 
-params.json:
+test_conn_params.json:
 
 ```JSON
 {
@@ -24,5 +24,19 @@ params.json:
     "database": "DATABASE",
     "schema": "SCHEMA",
     "ocsp_fail_open": false
+}
+```
+
+## test_key.py Usage:
+
+python test_conn.py --json-file "test_conn.json"
+
+
+test_key_params.json:
+
+```JSON
+{
+    "private_key_file": "path_to_key",
+    "private_key_file_pwd": "your_password"
 }
 ```
