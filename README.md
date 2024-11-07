@@ -1,8 +1,8 @@
-#
+# Snowflake Utils
 
 ## Python Dependencies
 
-# https://docs.snowflake.com/en/developer-guide/python-connector/python-connector-connect
+# https://docs.snowflake.com/en/developer-guide/python-connector/python-connector
 
 pip install snowflake-connector-python
 
