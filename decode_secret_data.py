@@ -8,7 +8,7 @@ Usage:
     python script_name.py --file-path /path/to/secret_data.json
 
 Arguments:
-    --file-path : The path to the JSON file containing `key` and `password`.
+    --file-path : The path to the JSON file containing `snowflake_private_key` and `snowflake_private_key_password`.
 
 Example:
     python script_name.py --file-path ./secret_data.json
@@ -30,7 +30,7 @@ import argparse
 logging.basicConfig(level=logging.INFO)
 
 # Argument parser to accept the path to the JSON file
-parser = argparse.ArgumentParser(description="Decode base64-encoded key and password from a JSON file.")
+parser = argparse.ArgumentParser(description="Decode base64-encoded snowflake_private_key and snowflake_private_key_password from a JSON file.")
 parser.add_argument(
     "--file-path",
     type=str,
@@ -46,16 +46,16 @@ try:
         secret_data = json.load(file)
 
     # Extract and decode the base64-encoded values
-    key_encoded = secret_data['key']
-    password_encoded = secret_data['password']
+    snowflake_private_key_encoded = secret_data['snowflake_private_key']
+    snowflake_private_key_password_encoded = secret_data['snowflake_private_key_password']
 
     # Decode the base64-encoded strings
-    key_decoded = base64.b64decode(key_encoded).decode('utf-8')
-    password_decoded = base64.b64decode(password_encoded).decode('utf-8')
+    snowflake_private_key_decoded = base64.b64decode(snowflake_private_key_encoded).decode('utf-8')
+    snowflake_private_key_password_decoded = base64.b64decode(snowflake_private_key_password_encoded).decode('utf-8')
 
     # Log the decoded values
-    logging.info(f"Decoded key: {key_decoded}")
-    logging.info(f"Decoded password: {password_decoded}")
+    logging.info(f"Decoded snowflake_private_key: {snowflake_private_key_decoded}")
+    logging.info(f"Decoded snowflake_private_key_password: {snowflake_private_key_password_decoded}")
 
 except FileNotFoundError:
     logging.error(f"File not found: {args.file_path}")
