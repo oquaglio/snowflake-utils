@@ -4,11 +4,16 @@ import logging
 import snowflake.connector
 from cryptography.hazmat.primitives.serialization import load_pem_private_key
 from cryptography.hazmat.backends import default_backend
+import re
 
+encrypted=False
 
 def is_key_encrypted(key_data):
     """Check if the provided key data indicates that the key is encrypted."""
-    return b"ENCRYPTED" in key_data
+    #return b"ENCRYPTED" in key_data
+    #return b"ENCRYPTED" in key_data
+    return bool(re.search(br"ENCRYPTED", key_data))
+
 
 
 def load_private_key(key_path, password):
@@ -16,6 +21,8 @@ def load_private_key(key_path, password):
     try:
         with open(key_path, "rb") as key_file:
             key_data = key_file.read()
+            print(key_data[:100])  # Print the first 100 bytes for inspection
+
 
         encrypted = is_key_encrypted(key_data)
 
@@ -56,7 +63,32 @@ def test_snowflake_connectivity_using_connector(conn_params):
     logging.info(f"Connecting to Snowflake...")
     # Connect to Snowflake
     try:
-        conn = snowflake.connector.connect(**conn_params)
+        #conn = snowflake.connector.connect(**conn_params)
+        if encrypted:
+            logging.info(f"Private key is encrypted; conn will use provided password")
+            conn = snowflake.connector.connect(
+                account=conn_params['account'],
+                user=conn_params['user'],
+                role=conn_params['role'],
+                private_key_file=conn_params['private_key_file'],
+                private_key_file_pwd=conn_params['private_key_file_pwd'],
+                warehouse=conn_params['warehouse'],
+                database=conn_params['database'],
+                schema=conn_params['schema']
+                )
+        else:
+            logging.info(f"Private key is not encrypted; conn will not use a password")
+            conn = snowflake.connector.connect(
+                account=conn_params['account'],
+                user=conn_params['user'],
+                role=conn_params['role'],
+                private_key_file=conn_params['private_key_file'],
+                warehouse=conn_params['warehouse'],
+                database=conn_params['database'],
+                schema=conn_params['schema']
+                )
+
+        logging.info(f"Getting cursor...")
         cursor = conn.cursor()
         cursor.execute("SELECT current_user;")
         one_row = cursor.fetchone()
