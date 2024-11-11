@@ -53,7 +53,7 @@ def load_private_key(key_path, password):
             backend=default_backend(),
         )
 
-        return private_key
+        return private_key, encrypted  # Return the key and encrypted status
     except Exception as e:
         logging.error(f"Failed to load private key: {e}")
         raise
@@ -64,7 +64,7 @@ def test_snowflake_connectivity_using_connector(conn_params):
     password = conn_params.get("private_key_file_pwd", "")
 
     # Load the private key without causing issues with non-encrypted keys
-    private_key = load_private_key(private_key_path, password)
+    private_key, encrypted = load_private_key(private_key_path, password)
     conn_params.update({"private_key": private_key})
 
     logging.info(conn_params)
