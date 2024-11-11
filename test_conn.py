@@ -12,7 +12,14 @@ def is_key_encrypted(key_data):
     """Check if the provided key data indicates that the key is encrypted."""
     #return b"ENCRYPTED" in key_data
     #return b"ENCRYPTED" in key_data
-    return bool(re.search(br"ENCRYPTED", key_data))
+    #return bool(re.search(br"ENCRYPTED", key_data))
+
+    if bool(re.search(br"\s*ENCRYPTED\s*", key_data)):
+        print("Match found in key data")  # Debug log to confirm match
+        return True
+    else:
+        print("No match found in key data")
+        return False
 
 
 
@@ -21,7 +28,9 @@ def load_private_key(key_path, password):
     try:
         with open(key_path, "rb") as key_file:
             key_data = key_file.read()
-            print(key_data[:100])  # Print the first 100 bytes for inspection
+           # print(key_data[:100])  # Print the first 100 bytes for inspection
+            print(repr(key_data[:100]))  # Print the first 100 bytes with all hidden characters shown
+
 
 
         encrypted = is_key_encrypted(key_data)
