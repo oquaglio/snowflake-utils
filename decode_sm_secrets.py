@@ -17,6 +17,7 @@ import logging
 import argparse
 import boto3
 from botocore.exceptions import ClientError
+import base64
 
 # Configure logging
 logging.basicConfig(level=logging.INFO)
@@ -34,7 +35,9 @@ def get_secret(secret_name):
         # Decrypts secret using the associated KMS CMK
         # Depending on whether the secret is a string or binary, one of these fields will be populated
         if 'SecretString' in get_secret_value_response:
-            return get_secret_value_response['SecretString']
+            #return get_secret_value_response['SecretString']
+            decoded_binary_secret = base64.b64decode(get_secret_value_response['SecretBinary'])
+            return decoded_binary_secret.decode('utf-8')
         else:
             decoded_binary_secret = base64.b64decode(get_secret_value_response['SecretBinary'])
             return decoded_binary_secret.decode('utf-8')
