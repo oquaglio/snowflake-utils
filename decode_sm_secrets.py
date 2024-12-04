@@ -36,7 +36,7 @@ def get_secret(secret_name):
         # Depending on whether the secret is a string or binary, one of these fields will be populated
         if 'SecretString' in get_secret_value_response:
             #return get_secret_value_response['SecretString']
-            decoded_binary_secret = base64.b64decode(get_secret_value_response['SecretBinary'])
+            decoded_binary_secret = base64.b64decode(get_secret_value_response['SecretString'])
             return decoded_binary_secret.decode('utf-8')
         else:
             decoded_binary_secret = base64.b64decode(get_secret_value_response['SecretBinary'])
